@@ -9,7 +9,7 @@
 
 ## Document image API
 
-The public API stores image documents on Laravel's private `local` disk and compares a submitted image with a stored document using `sapientpro/image-comparator`. Verification checks visual similarity; it does not establish the authenticity of a document. A similarity score of at least 85% is considered verified. Uploads must be JPEG, PNG, GIF, or WebP images no larger than 10 MB.
+The public API stores image documents on Laravel's private `local` disk and compares a submitted image with a stored document using perceptual hashes from `intervention/imagehash`. The API expresses hash similarity as the percentage of matching hash bits. Verification checks visual similarity; it does not establish the authenticity of a document. A similarity score of at least 85% is considered verified. Uploads must be JPEG, PNG, GIF, or WebP images no larger than 10 MB.
 
 Run the migration before using the API:
 

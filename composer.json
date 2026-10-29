@@ -10,9 +10,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "intervention/imagehash": "^1.0",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1",
-        "sapientpro/image-comparator": "^1.4"
+        "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Document;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\ImageHash\ImageHasher;
+use Intervention\ImageHash\Strategies\DifferenceStrategy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
-use SapientPro\ImageComparator\ImageComparator;
 
 class DocumentController extends Controller
 {
@@ -65,10 +67,10 @@ class DocumentController extends Controller
             abort(404, 'The stored document file is missing.');
         }
 
-        $similarity = (new ImageComparator())->detect(
-            $storedPath,
-            $request->file('document')->getPathname(),
-        );
+        $hasher = new ImageHasher(new GdDriver(), new DifferenceStrategy());
+        $storedHash = $hasher->hash($storedPath);
+        $uploadedHash = $hasher->hash($request->file('document')->getPathname());
+        $similarity = (1 - ($storedHash->distance($uploadedHash) / $storedHash->bitLength())) * 100;
 
         return response()->json([
             'data' => [
